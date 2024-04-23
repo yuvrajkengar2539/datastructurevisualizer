@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary Search Visualization</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        text-align: center;
+        color: white;
+      }
+      .array-container {
+        margin-bottom: 20px;
+        color: black;
+      }
+      .array-element {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: lightblue;
+        border-radius: 5px;
+      }
+      .search-box {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="array-container" id="arrayContainer">
+        <!-- Array elements will be added here dynamically -->
+      </div>
+      <div class="search-box">
+        <label for="searchInput">Enter a number to search:</label>
+        <input type="number" id="searchInput" />
+        <button onclick="binarySearch()">Search</button>
+      </div>
+      <p id="result"></p>
+    </div>
+
+    <script>
+      function generateSortedArray(size, min, max) {
+        const array = [];
+        for (let i = 0; i < size; i++) {
+          array.push(Math.floor(Math.random() * (max - min + 1)) + min);
+        }
+        return array.sort((a, b) => a - b);
+      }
+
+      function displayArray(array) {
+        const arrayContainer = document.getElementById("arrayContainer");
+        arrayContainer.innerHTML = "";
+        array.forEach((num) => {
+          const element = document.createElement("div");
+          element.classList.add("array-element");
+          element.textContent = num;
+          arrayContainer.appendChild(element);
+        });
+      }
+
+      function binarySearch() {
+        const searchInput = document.getElementById("searchInput");
+        const searchValue = parseInt(searchInput.value);
+        if (isNaN(searchValue)) {
+          alert("Please enter a valid number.");
+          return;
+        }
+
+        const arrayElements = document.querySelectorAll(".array-element");
+        let low = 0;
+        let high = arrayElements.length - 1;
+        let found = false;
+        const interval = setInterval(() => {
+          if (low > high) {
+            clearInterval(interval);
+            if (!found) {
+              document.getElementById(
+                "result"
+              ).textContent = `${searchValue} not found in the array.`;
+            }
+            return;
+          }
+
+          const mid = Math.floor((low + high) / 2);
+          const midValue = parseInt(arrayElements[mid].textContent);
+          arrayElements[mid].style.backgroundColor = "yellow";
+          if (midValue === searchValue) {
+            found = true;
+            arrayElements[mid].style.backgroundColor = "lightgreen";
+            document.getElementById(
+              "result"
+            ).textContent = `${searchValue} found at index ${mid}.`;
+            clearInterval(interval);
+          } else if (midValue < searchValue) {
+            for (let i = 0; i <= high; i++) {
+              if (i < low || i > mid) {
+                arrayElements[i].style.backgroundColor = "lightcoral";
+              }
+            }
+            low = mid + 1;
+          } else {
+            for (let i = 0; i <= high; i++) {
+              if (i > high || i < mid) {
+                arrayElements[i].style.backgroundColor = "lightcoral";
+              }
+            }
+            high = mid - 1;
+          }
+        }, 1000);
+      }
+
+      window.onload = function () {
+        const array = generateSortedArray(10, 1, 20); // Change the size, min, and max as needed
+        displayArray(array);
+      };
+    </script>
+  </body>
+</html>

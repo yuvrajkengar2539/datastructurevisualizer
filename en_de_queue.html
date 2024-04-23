@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queue Visualization</title>
+    <style>
+      body {
+        background-color: black;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .Theory {
+        padding: 20px;
+        max-width: 350px;
+        text-align: left;
+      }
+      .queue {
+        border: 1px solid #ccc;
+        padding: 20px;
+        max-width: 200px;
+        text-align: center;
+      }
+      .queue-item {
+        margin-bottom: 5px;
+      }
+      .button {
+        padding: 5px 10px;
+        margin: 5px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="queue">
+        <h3>Queue</h3>
+        <div id="queue-items"></div>
+        <button class="button" onclick="enqueueItem()">Enqueue</button>
+        <button class="button" onclick="dequeueItem()">Dequeue</button>
+      </div>
+      <div class="Theory">
+        <h3>Theory</h3>
+        <p>
+          Enqueue Operation:<br />
+
+          1. Enqueue operation adds an element to the back (also known as rear)
+          of the queue.<br />
+          2. It inserts the new element after the existing elements in the
+          queue.<br />
+          3. The enqueue operation is analogous to adding people to the end of a
+          line or queue in real-life scenarios.<br />
+          4. After the enqueue operation, the new element becomes the last
+          element in the queue. <br />
+          <br />
+          Dequeue Operation:<br />
+
+          1. Dequeue operation removes and returns the element from the front of
+          the queue.<br />
+          2. It retrieves and removes the oldest (first) element from the
+          queue.<br />
+          3. The dequeue operation is akin to serving the person at the front of
+          the line or queue in real-life scenarios.<br />
+          4. After the dequeue operation, the second element in the queue
+          becomes the new front.<br />
+        </p>
+      </div>
+    </div>
+
+    <script>
+      let queue = [];
+
+      function renderQueue() {
+        const queueElement = document.getElementById("queue-items");
+        queueElement.innerHTML = "";
+        queue.forEach((item, index) => {
+          const queueItem = document.createElement("div");
+          queueItem.classList.add("queue-item");
+          queueItem.innerText = `Item ${index + 1}: ${item}`;
+          queueElement.appendChild(queueItem);
+        });
+      }
+
+      function enqueueItem() {
+        const newItem = prompt("Enter item to enqueue:");
+        if (newItem !== null) {
+          queue.push(newItem);
+          renderQueue();
+        }
+      }
+
+      function dequeueItem() {
+        if (queue.length === 0) {
+          alert("Queue is empty");
+        } else {
+          queue.shift();
+          renderQueue();
+        }
+      }
+
+      renderQueue();
+    </script>
+  </body>
+</html>
